@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Library.Models.LibraryModel.Book>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<div>
+    @using (Html.BeginForm("Index", "Books", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+    {
+        <span>Fraza:</span>
+        <input type="text" name="search"/>
+            
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Szukaj" />
+            </div>
+        </div>
+    }
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Isbn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PublisherId)
+        </th>
+        <th>
+            @Html.Label("Liczba dostepnych")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Isbn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CategoryId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PublisherId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookCopies.Count)
+        </td>
+        <td>
+            @if (!ViewBag.Cart.Contains(item.Id))
+            {
+                @Html.ActionLink("AddToCart", "AddToCart", new { id = item.Id })
+            }
+            else
+            {
+                @Html.ActionLink("DeleteFromCart", "DeleteFromCart", new { id = item.Id })
+            }
+        </td>
+    </tr>
+}
+
+</table>
